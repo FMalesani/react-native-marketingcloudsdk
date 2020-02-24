@@ -91,7 +91,7 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         handleAction(new Action() {
             @Override
             void execute(MarketingCloudSdk sdk) {
-                sdk.getRegionMessageManager().enableGeofenceMessaging()
+                sdk.getRegionMessageManager().enableGeofenceMessaging();
             }
         });
     }
@@ -101,7 +101,7 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         handleAction(new Action() {
             @Override
             void execute(MarketingCloudSdk sdk) {
-                sdk.getRegionMessageManager().disableGeofenceMessaging()
+                sdk.getRegionMessageManager().disableGeofenceMessaging();
             }
         });
     }
