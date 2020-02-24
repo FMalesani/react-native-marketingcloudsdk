@@ -87,6 +87,26 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void enableGeofences() {
+        handleAction(new Action() {
+            @Override
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegionMessageManager().enableGeofenceMessaging()
+            }
+        });
+    }
+
+    @ReactMethod
+    public void disableGeofences() {
+        handleAction(new Action() {
+            @Override
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getRegionMessageManager().disableGeofenceMessaging()
+            }
+        });
+    }
+
+    @ReactMethod
     public void getSystemToken(Promise promise) {
         handleAction(new PromiseAction(promise) {
             @Override

@@ -45,4 +45,6 @@ export class MCReactModule {
     static enableVerboseLogging(): void;
     static disableVerboseLogging(): void;
     static logSdkState(): void;
+    static enableGeofences(): void;
+    static disableGeofences(): void;
 }
