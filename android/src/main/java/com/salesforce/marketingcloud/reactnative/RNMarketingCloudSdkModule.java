@@ -231,6 +231,86 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
         });
     }
 
+
+    @ReactMethod
+    public void getAllMessages(Promise promise) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                List<InboxMessage> messages = sdk.getInboxMessageManager().getMessages();
+                WritableArray array = Arguments.createArray();
+                if (!messages.isEmpty()) {
+                    for (InboxMessage message : messages) {
+                        WritableMap messageMap = Arguments.createMap();
+                        messageMap.putString("id", message.id());
+                        messageMap.putString("title", message.title());
+                        messageMap.putString("body", message.alert());
+                        messageMap.putString("date", message.sendDateUtc().toString());
+                        messageMap.putBoolean("read", message.read());
+                        // log("MESSAGES SINGLE: ", messageMap.toString());
+                        array.pushMap(messageMap);
+                    }
+                }
+                // log("MESSAGES CONVERSION: ", array.toString());
+                promise.resolve(array);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void refreshInbox() {
+        handleAction(new Action() {
+            @Override
+            void execute(MarketingCloudSdk sdk) {
+                sdk.getInboxMessageManager().refreshInbox(null);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getAllMessagesCount(Promise promise) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                int messagesCount = sdk.getInboxMessageManager().getMessageCount();
+                promise.resolve(messagesCount);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getUnreadMessagesCount(Promise promise) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                int messagesCount = sdk.getInboxMessageManager().getUnreadMessageCount();
+                promise.resolve(messagesCount);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void markMessageWithIdRead(Promise promise, final String id) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                sdk.getInboxMessageManager().setMessageRead(id);
+                promise.resolve(true);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void markMessageWithIdDeleted(Promise promise, final String id) {
+        handleAction(new PromiseAction(promise) {
+            @Override
+            void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
+                sdk.getInboxMessageManager().deleteMessage(id);
+                promise.resolve(true);
+            }
+        });
+    }
+
     private void handleAction(final Action action) {
         boolean initializing = MarketingCloudSdk.isInitializing();
         boolean ready = MarketingCloudSdk.isReady();

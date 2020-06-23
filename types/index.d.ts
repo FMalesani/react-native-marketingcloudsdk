@@ -47,4 +47,10 @@ export class MCReactModule {
     static logSdkState(): void;
     static enableGeofences(): void;
     static disableGeofences(): void;
+    static getAllMessages(): Promise<Array<Map<string, string>>>;
+    static refreshInbox(): void;
+    static getAllMessagesCount(): Promise<number>;
+    static getUnreadMessagesCount(): Promise<number>;
+    static markMessageWithIdRead(id: string): Promise<boolean>;
+    static markMessageWithIdDeleted(id: string): Promise<boolean>;
 }

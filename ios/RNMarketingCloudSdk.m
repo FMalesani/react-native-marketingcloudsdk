@@ -136,4 +136,61 @@ RCT_EXPORT_METHOD(logSdkState) {
     [self splitLog:[[MarketingCloudSDK sharedInstance] sfmc_getSDKState]];
 }
 
+//Inbox methods
+RCT_EXPORT_METHOD(getAllMessages
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSArray *messages = [[MarketingCloudSDK sharedInstance] sfmc_getAllMessages];
+
+    NSMutableArray *newMessages = [[NSMutableArray alloc] init];
+    
+    if (messages != nil) {
+        if ([messages count] > 0) {
+            for (NSDictionary* message in messages) {
+                NSMutableDictionary* newMessage = [[NSMutableDictionary alloc] init];
+                [newMessage setValue: [message valueForKey:@"id"] forKey:@"id"];
+                [newMessage setValue: [message valueForKey:@"title"] forKey:@"title"];
+                [newMessage setValue: [message valueForKey:@"alert"] forKey:@"body"];
+                [newMessage setValue: [message valueForKey:@"read"] forKey:@"read"];
+                [newMessage setValue: [message valueForKey:@"sendDateUtc"] forKey:@"date"];
+                [newMessages addObject:newMessage];
+            }
+        }
+    }
+
+    resolve(newMessages);
+}
+
+RCT_EXPORT_METHOD(refreshInbox) {
+    [[MarketingCloudSDK sharedInstance] sfmc_refreshMessages];
+}
+
+RCT_EXPORT_METHOD(getAllMessagesCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSUInteger messagesCount = [[MarketingCloudSDK sharedInstance] sfmc_getAllMessagesCount];
+    resolve(@(messagesCount));
+}
+
+RCT_EXPORT_METHOD(getUnreadMessagesCount
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    NSUInteger messagesCount = [[MarketingCloudSDK sharedInstance] sfmc_getUnreadMessagesCount];
+    resolve(@(messagesCount));
+}
+
+RCT_EXPORT_METHOD(markMessageWithIdRead : (NSString *_Nonnull)id
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL messageRead = [[MarketingCloudSDK sharedInstance] sfmc_markMessageWithIdRead: id];
+    resolve(@(messageRead));
+}
+
+RCT_EXPORT_METHOD(markMessageWithIdDeleted : (NSString *_Nonnull)id
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
+    BOOL messageDeleted = [[MarketingCloudSDK sharedInstance] sfmc_markMessageWithIdDeleted: id];
+    resolve(@(messageDeleted));
+}
+
 @end
