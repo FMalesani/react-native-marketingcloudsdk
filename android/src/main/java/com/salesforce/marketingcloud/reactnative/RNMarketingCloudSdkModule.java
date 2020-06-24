@@ -293,7 +293,7 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void markMessageWithIdRead(Promise promise, final String id) {
+    public void markMessageWithIdRead(final String id, Promise promise) {
         handleAction(new PromiseAction(promise) {
             @Override
             void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
@@ -304,7 +304,7 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void markMessageWithIdDeleted(Promise promise, final String id) {
+    public void markMessageWithIdDeleted(final String id, Promise promise) {
         handleAction(new PromiseAction(promise) {
             @Override
             void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
