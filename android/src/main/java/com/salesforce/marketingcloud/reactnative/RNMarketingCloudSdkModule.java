@@ -45,6 +45,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.annotation.Nonnull;
 
@@ -242,19 +244,18 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
             void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 List<InboxMessage> messages = sdk.getInboxMessageManager().getMessages();
                 WritableArray array = Arguments.createArray();
+                @SuppressLint("SimpleDateFormat") DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
                 if (!messages.isEmpty()) {
                     for (InboxMessage message : messages) {
                         WritableMap messageMap = Arguments.createMap();
                         messageMap.putString("id", message.id());
                         messageMap.putString("title", message.title());
                         messageMap.putString("body", message.alert());
-                        messageMap.putString("date", message.sendDateUtc().toString());
+                        messageMap.putString("date", format.format(message.sendDateUtc()));
                         messageMap.putBoolean("read", message.read());
-                        // log("MESSAGES SINGLE: ", messageMap.toString());
                         array.pushMap(messageMap);
                     }
                 }
-                // log("MESSAGES CONVERSION: ", array.toString());
                 promise.resolve(array);
             }
         });
