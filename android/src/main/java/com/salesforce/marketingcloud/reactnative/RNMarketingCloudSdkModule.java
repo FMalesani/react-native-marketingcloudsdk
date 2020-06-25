@@ -244,7 +244,7 @@ public class RNMarketingCloudSdkModule extends ReactContextBaseJavaModule {
             void execute(MarketingCloudSdk sdk, @NonNull Promise promise) {
                 List<InboxMessage> messages = sdk.getInboxMessageManager().getMessages();
                 WritableArray array = Arguments.createArray();
-                @SuppressLint("SimpleDateFormat") DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
                 if (!messages.isEmpty()) {
                     for (InboxMessage message : messages) {
                         WritableMap messageMap = Arguments.createMap();
