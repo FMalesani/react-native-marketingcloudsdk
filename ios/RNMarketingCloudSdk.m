@@ -146,13 +146,22 @@ RCT_EXPORT_METHOD(getAllMessages
     
     if (messages != nil) {
         if ([messages count] > 0) {
+            
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
+            
             for (NSDictionary* message in messages) {
+                
+                NSDate *messageDate = [message objectForKey:@"sendDateUtc"];
+                NSString *notificationDate = [dateFormat stringFromDate:messageDate];
+                
                 NSMutableDictionary* newMessage = [[NSMutableDictionary alloc] init];
                 [newMessage setValue: [message valueForKey:@"id"] forKey:@"id"];
                 [newMessage setValue: [message valueForKey:@"title"] forKey:@"title"];
                 [newMessage setValue: [message valueForKey:@"alert"] forKey:@"body"];
                 [newMessage setValue: [message valueForKey:@"read"] forKey:@"read"];
-                [newMessage setValue: [message valueForKey:@"sendDateUtc"] forKey:@"date"];
+                [newMessage setValue: notificationDate forKey:@"date"];
+
                 [newMessages addObject:newMessage];
             }
         }
